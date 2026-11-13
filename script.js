@@ -7,7 +7,7 @@ let currentFontSize = 16;
 
 let activitiesList = [
     { id: 1, title: "Exercício de Frações e Divisão", subject: "Matemática", status: "Pendente", group: "iniciais" },
-    { id: 2, title: "Leitura e Leitura Interpretativa", subject: "Português", status: "Pendente", group: "iniciais" },
+    { id: 2, title: "Leitura e Interpretação de Texto", subject: "Português", status: "Pendente", group: "iniciais" },
     { id: 3, title: "Relatório da Revolução Industrial", subject: "História", status: "Pendente", group: "finais" },
     { id: 4, title: "Resolução de Equações de 2º Grau", subject: "Matemática", status: "Pendente", group: "finais" }
 ];
