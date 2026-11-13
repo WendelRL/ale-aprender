@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALE Aprender - Plataforma Educacional Acessível</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-iniciais">
+
+    <!-- BARRA DE ACESSIBILIDADE FIXA -->
+    <div class="accessibility-bar" aria-label="Barra de Ferramentas de Acessibilidade">
+        <div class="accessibility-container">
+            <span class="acc-title">♿ Acessibilidade:</span>
+            <button onclick="toggleTheme()" class="acc-btn" id="theme-toggle-btn" title="Alternar Tema Claro / Escuro">🌓 Tema: <span id="theme-status-text">Claro</span></button>
+            <button onclick="toggleHighContrast()" class="acc-btn" title="Alto Contraste">👁️ Alto Contraste</button>
+            <button onclick="changeFontSize(1)" class="acc-btn" title="Aumentar Texto">A+</button>
+            <button onclick="changeFontSize(-1)" class="acc-btn" title="Diminuir Texto">A-</button>
+            <button onclick="resetFontSize()" class="acc-btn" title="Tamanho Normal">A</button>
+            <button onclick="toggleTextToSpeech()" class="acc-btn" id="tts-btn" title="Leitor de Tela / Áudio Guiado">🔊 Leitor de Voz: <span id="tts-status">OFF</span></button>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="main-header">
+        <div class="logo-container" onclick="showScreen('screen-welcome')">
+            <svg class="logo-svg" viewBox="0 0 200 60" width="160" height="48" aria-label="Logo ALE Aprender">
+                <defs>
+                    <linearGradient id="aleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#4F46E5"/>
+                        <stop offset="100%" stop-color="#3730A3"/>
+                    </linearGradient>
+                </defs>
+                <rect width="200" height="60" rx="12" fill="url(#aleGrad)"/>
+                <path d="M 25 45 L 45 15 L 65 45 L 53 45 L 45 31 L 37 45 Z" fill="#FFFFFF"/>
+                <path d="M 30 35 L 68 25 L 62 20 L 25 30 Z" fill="#FBBF24"/>
+                <text x="75" y="38" font-family="'Nunito', sans-serif" font-weight="800" font-size="24" fill="#FFFFFF">ALE</text>
+                <text x="130" y="38" font-family="'Nunito', sans-serif" font-weight="700" font-size="14" fill="#FBBF24">Aprender</text>
+                <path d="M 132 42 Q 140 38 148 42 L 148 50 Q 140 46 132 50 Z" fill="#FBBF24" opacity="0.8"/>
+                <polygon points="140,15 142,20 147,20 143,23 145,28 140,25 135,28 137,23 133,20 138,20" fill="#FBBF24"/>
+            </svg>
+        </div>
+        <div class="user-badge" id="header-user-info" style="display: none;">
+            <span id="user-display-name">Estudante</span>
+            <span class="badge-tag" id="user-display-tag">4º Ano</span>
+            <button class="btn-logout" onclick="logout()">Sair / Trocar Perfil</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+
+        <!-- TELA 1: BOAS-VINDAS / SELEÇÃO DE PERFIL -->
+        <section id="screen-welcome" class="screen active">
+            <div class="welcome-card">
+                <h1 class="speakable">Bem-vindo ao <span>ALE Aprender</span>!</h1>
+                <p class="speakable">Plataforma educacional adaptada e acessível para todos os estudantes e professores do Ensino Fundamental.</p>
+                <div class="profile-options">
+                    <button class="card-btn student-btn" onclick="goToStudentSetup()">
+                        <div class="icon">🎓</div>
+                        <h2 class="speakable">Sou Estudante</h2>
+                        <p class="speakable">Acesse seus jogos, atividades, provas e biblioteca com recursos de acessibilidade!</p>
+                    </button>
+                    <button class="card-btn teacher-btn" onclick="goToTeacherDashboard()">
+                        <div class="icon">👨‍🏫</div>
+                        <h2 class="speakable">Sou Professor</h2>
+                        <p class="speakable">Gerencie turmas, crie atividades acessíveis e acompanhe o progresso dos alunos.</p>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA 2: IDENTIFICAÇÃO DO ESTUDANTE -->
+        <section id="screen-student-setup" class="screen">
+            <div class="form-card">
+                <h2 class="speakable">Identificação do Estudante</h2>
+                <form id="form-student" onsubmit="handleStudentSetup(event)">
+                    <div class="form-group">
+                        <label for="student-name">Seu Nome ou Apelido:</label>
+                        <input type="text" id="student-name" required placeholder="Ex: Lucas Silva" value="Lucas Silva">
+                    </div>
+                    <div class="form-group">
+                        <label for="student-year">Selecione o seu Ano Escolar:</label>
+                        <select id="student-year" required>
+                            <optgroup label="Ensino Fundamental I (Anos Iniciais - Interface Lúdica)">
+                                <option value="1">1º Ano</option>
+                                <option value="2">2º Ano</option>
+                                <option value="3">3º Ano</option>
+                                <option value="4" selected>4º Ano</option>
+                                <option value="5">5º Ano</option>
+                                <option value="6">6º Ano</option>
+                            </optgroup>
+                            <optgroup label="Ensino Fundamental II (Anos Finais - Interface Pro)">
+                                <option value="7">7º Ano</option>
+                                <option value="8">8º Ano</option>
+                                <option value="9">9º Ano</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-class">Turma & Turno:</label>
+                        <select id="student-class" required>
+                            <option value="Turma A - Manhã">Turma A - Manhã</option>
+                            <option value="Turma B - Tarde">Turma B - Tarde</option>
+                            <option value="Turma C - Noite">Turma C - Noite</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-code">Código de Acesso da Turma (Opcional):</label>
+                        <input type="text" id="student-code" placeholder="Ex: ALE-4A92">
+                    </div>
+                    <button type="submit" class="btn-primary">Entrar na Plataforma ✨</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TELA 3: DASHBOARD ANOS INICIAIS (1º ao 6º Ano) -->
+        <section id="screen-dashboard-iniciais" class="screen">
+            <div class="mascot-banner">
+                <div class="mascot-icon">🤖</div>
+                <div class="mascot-text">
+                    <h2 class="speakable">Olá, <span class="user-name-placeholder">Estudante</span>! Vamos aprender hoje?</h2>
+                    <p class="speakable">Você tem <strong id="iniciais-pending-count">2</strong> atividades pendentes e novos jogos liberados!</p>
+                </div>
+            </div>
+
+            <nav class="sub-nav">
+                <button class="nav-tab active" onclick="switchTab(this, 'iniciais-tab-home')">🏠 Início</button>
+                <button class="nav-tab" onclick="switchTab(this, 'iniciais-tab-games')">🎮 Aprender Jogando</button>
+                <button class="nav-tab" onclick="switchTab(this, 'iniciais-tab-activities')">✏️ Minhas Atividades</button>
+                <button class="nav-tab" onclick="switchTab(this, 'iniciais-tab-library')">📚 Leitura Interativa</button>
+            </nav>
+
+            <div id="iniciais-tab-home" class="tab-content active">
+                <div class="grid-cards">
+                    <div class="card-feature" onclick="triggerTab('iniciais-tab-games')">
+                        <div class="card-icon">🎮</div>
+                        <h3 class="speakable">Jogos Educativos</h3>
+                        <p class="speakable">Desafio das Palavras, Matemática Divertida, Quiz e Caça ao Conhecimento.</p>
+                        <span class="badge-action">Clique para Jogar ➔</span>
+                    </div>
+                    <div class="card-feature" onclick="triggerTab('iniciais-tab-activities')">
+                        <div class="card-icon">📝</div>
+                        <h3 class="speakable">Atividades da Turma</h3>
+                        <p class="speakable">Veja os deveres de casa e tarefas atribuídas pelo seu professor.</p>
+                        <span class="badge-action">Ver Tarefas ➔</span>
+                    </div>
+                    <div class="card-feature" onclick="triggerTab('iniciais-tab-library')">
+                        <div class="card-icon">📖</div>
+                        <h3 class="speakable">Biblioteca Digital</h3>
+                        <p class="speakable">Historinhas curtas com suporte a narração e libras!</p>
+                        <span class="badge-action">Abrir Livros ➔</span>
+                    </div>
+                </div>
+
+                <div class="progress-box">
+                    <h3 class="speakable">🏆 Seu Progresso de Aprendizagem</h3>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="iniciais-progress-bar" style="width: 75%;"></div>
+                    </div>
+                    <p class="speakable">75% das tarefas concluídas esta semana! Você ganhou <strong>350 Estrelas 🌟</strong></p>
+                </div>
+            </div>
+
+            <div id="iniciais-tab-games" class="tab-content">
+                <h2 class="speakable">🎮 Central de Jogos Educativos</h2>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-thumb">🔤</div>
+                        <h3 class="speakable">Desafio das Palavras</h3>
+                        <p class="speakable">Complete as sílabas e descubra a ortografia correta.</p>
+                        <button class="btn-game" onclick="startGame('palavras')">Jogar Agora ▶</button>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-thumb">🔢</div>
+                        <h3 class="speakable">Matemática Divertida</h3>
+                        <p class="speakable">Operações rápidas de adição, subtração e multiplicação!</p>
+                        <button class="btn-game" onclick="startGame('matematica')">Jogar Agora ▶</button>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-thumb">💡</div>
+                        <h3 class="speakable">Quiz do Conhecimento</h3>
+                        <p class="speakable">Perguntas de Ciências, História e Geografia.</p>
+                        <button class="btn-game" onclick="startGame('quiz-iniciais')">Jogar Agora ▶</button>
+                    </div>
+                    <div class="game-card">
+                        <div class="game-thumb">🗺️</div>
+                        <h3 class="speakable">Caça ao Conhecimento</h3>
+                        <p class="speakable">Descubra as respostas para avançar de fase!</p>
+                        <button class="btn-game" onclick="startGame('caca')">Jogar Agora ▶</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="iniciais-tab-activities" class="tab-content">
+                <h2 class="speakable">✏️ Minhas Atividades</h2>
+                <div id="iniciais-activities-list" class="activities-list"></div>
+            </div>
+
+            <div id="iniciais-tab-library" class="tab-content">
+                <h2 class="speakable">📚 Cantinho da Leitura Interativa Acessível</h2>
+                <div class="reader-card">
+                    <h3 class="speakable">📖 A Aventura do Robô Aleco no Ensino Fundamental</h3>
+                    <p class="story-text speakable" id="story-paragraph">
+                        "Era uma vez um pequeno robô chamado Aleco que adorava aprender coisas novas. 
+                        Todos os dias, ele explorava o universo dos números e das letras. Um dia, Aleco descobriu 
+                        que quanto mais ele lia livros e resolvia desafios, mais brilhante sua estrela amarela ficava!"
+                    </p>
+                    <div class="reader-controls">
+                        <button class="btn-secondary" onclick="speakText('story-paragraph')">🔊 Ouvir Narração</button>
+                        <button class="btn-primary" style="width: auto;" onclick="alert('🎉 Parabéns! Você concluiu a leitura da história!')">Concluir Leitura ✨</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA 4: DASHBOARD ANOS FINAIS (7º ao 9º Ano) -->
+        <section id="screen-dashboard-finais" class="screen">
+            <div class="pro-header">
+                <div>
+                    <h2 class="speakable">Seu espaço de aprendizagem</h2>
+                    <p class="speakable">Painel do estudante — <span class="user-name-placeholder">Estudante</span> (<span id="finais-year-display">8º Ano</span>)</p>
+                </div>
+                <div class="stats-pills">
+                    <span class="pill" id="user-xp-display">⚡ XP: 1.250</span>
+                    <span class="pill">📌 Turma: 8º B</span>
+                </div>
+            </div>
+
+            <nav class="sub-nav pro-nav">
+                <button class="nav-tab active" onclick="switchTab(this, 'finais-tab-home')">📊 Visão Geral</button>
+                <button class="nav-tab" onclick="switchTab(this, 'finais-tab-games')">🧠 Desafios & Jogos</button>
+                <button class="nav-tab" onclick="switchTab(this, 'finais-tab-tasks')">📋 Atividades & Provas</button>
+                <button class="nav-tab" onclick="switchTab(this, 'finais-tab-subjects')">📚 Disciplinas</button>
+            </nav>
+
+            <div id="finais-tab-home" class="tab-content active">
+                <div class="pro-grid">
+                    <div class="pro-card">
+                        <h3 class="speakable">📅 Próximas Entregas e Provas</h3>
+                        <ul class="task-checklist">
+                            <li onclick="openActivityModal('Trabalho de História: Revolução Industrial', 'História')">
+                                <div>
+                                    <span class="tag-work">Trabalho</span> <strong class="speakable">História: Revolução Industrial</strong>
+                                    <p style="font-size: 12px; opacity: 0.8;">Entrega: 15/Nov - Clique para abrir</p>
+                                </div>
+                                <button class="btn-sm">Abrir</button>
+                            </li>
+                            <li onclick="openActivityModal('Prova de Matemática: Equações do 2º Grau', 'Matemática')">
+                                <div>
+                                    <span class="tag-exam">Prova</span> <strong class="speakable">Matemática: Equações do 2º Grau</strong>
+                                    <p style="font-size: 12px; opacity: 0.8;">Data: 18/Nov - Clique para abrir</p>
+                                </div>
+                                <button class="btn-sm">Abrir</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pro-card">
+                        <h3 class="speakable">📈 Progresso Acadêmico</h3>
+                        <div class="stat-box">
+                            <p class="speakable">Média Geral: <strong>8.8 / 10</strong></p>
+                            <p class="speakable">Tarefas Concluídas: <strong>92%</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="finais-tab-games" class="tab-content">
+                <h2 class="speakable">🧠 Jogos de Raciocínio & Conhecimento</h2>
+                <div class="games-grid">
+                    <div class="game-card pro-card">
+                        <h3 class="speakable">📐 Desafio Matemático</h3>
+                        <p class="speakable">Equações, expressões algébricas e geometria avançada.</p>
+                        <button class="btn-game" onclick="startGame('matematica-pro')">Iniciar Desafio ▶</button>
+                    </div>
+                    <div class="game-card pro-card">
+                        <h3 class="speakable">🧬 Quiz de Ciências & Sociedade</h3>
+                        <p class="speakable">Questões sobre biologia, física, química, história e geopolítica.</p>
+                        <button class="btn-game" onclick="startGame('quiz-finais')">Iniciar Quiz ▶</button>
+                    </div>
+                    <div class="game-card pro-card">
+                        <h3 class="speakable">📝 Interpretação Textual</h3>
+                        <p class="speakable">Análise de textos, figuras de linguagem e gramática.</p>
+                        <button class="btn-game" onclick="startGame('portugues-pro')">Iniciar Exercício ▶</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="finais-tab-tasks" class="tab-content">
+                <h2 class="speakable">📋 Painel de Atividades e Provas</h2>
+                <div id="finais-activities-list" class="activities-list"></div>
+            </div>
+
+            <div id="finais-tab-subjects" class="tab-content">
+                <h2 class="speakable">📚 Minhas Disciplinas</h2>
+                <div class="subjects-grid">
+                    <div class="subject-chip" onclick="filterSubject('Matemática')">📐 Matemática</div>
+                    <div class="subject-chip" onclick="filterSubject('Língua Portuguesa')">📖 Língua Portuguesa</div>
+                    <div class="subject-chip" onclick="filterSubject('Ciências')">🔬 Ciências da Natureza</div>
+                    <div class="subject-chip" onclick="filterSubject('Geografia')">🌍 Geografia</div>
+                    <div class="subject-chip" onclick="filterSubject('História')">📜 História</div>
+                    <div class="subject-chip" onclick="filterSubject('Arte')">🎨 Arte</div>
+                    <div class="subject-chip" onclick="filterSubject('Inglês')">🇬🇧 Língua Inglesa</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA 5: ÁREA DO PROFESSOR -->
+        <section id="screen-teacher-dashboard" class="screen">
+            <div class="teacher-header">
+                <h2 class="speakable">👨‍🏫 Painel do Professor</h2>
+                <button class="btn-secondary" onclick="openModal('modal-create-class')">+ Criar Nova Turma</button>
+            </div>
+
+            <div class="teacher-grid">
+                <div class="pro-card">
+                    <h3 class="speakable">Minhas Turmas Cadastradas</h3>
+                    <div id="teacher-classes-list"></div>
+                </div>
+
+                <div class="pro-card">
+                    <h3 class="speakable">Cadastrar Nova Atividade / Prova / Jogo</h3>
+                    <form onsubmit="handleCreateActivity(event)">
+                        <div class="form-group">
+                            <label>Título da Atividade:</label>
+                            <input type="text" id="act-title" required placeholder="Ex: Quiz de Geometria">
+                        </div>
+                        <div class="form-group">
+                            <label>Disciplina:</label>
+                            <input type="text" id="act-subject" required placeholder="Ex: Matemática">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo:</label>
+                            <select id="act-type">
+                                <option value="Exercício">Exercício</option>
+                                <option value="Trabalho">Trabalho</option>
+                                <option value="Prova">Prova</option>
+                                <option value="Jogo Educativo">Jogo Educativo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Destinado aos alunos de:</label>
+                            <select id="act-target-group">
+                                <option value="iniciais">Anos Iniciais (1º ao 6º Ano)</option>
+                                <option value="finais">Anos Finais (7º ao 9º Ano)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">Publicar Atividade no Protótipo 🚀</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODAIS -->
+        <div id="modal-game" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal-game')">&times;</span>
+                <h2 id="game-title">Jogo Educativo</h2>
+                <hr style="margin: 12px 0; opacity: 0.2;">
+                <div id="game-body"></div>
+                <div id="game-score" class="score-display">Pontuação: 0 XP</div>
+            </div>
+        </div>
+
+        <div id="modal-activity" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal-activity')">&times;</span>
+                <h2 id="modal-act-title">Título da Atividade</h2>
+                <p id="modal-act-sub" style="margin: 8px 0; opacity: 0.8;">Disciplina: Matemática</p>
+                <div style="background: rgba(0,0,0,0.05); padding: 16px; border-radius: 8px; margin: 16px 0;">
+                    <p><strong>Descrição:</strong> Resolva as questões enviadas pelo professor e faça o envio da sua resposta demonstrativa abaixo.</p>
+                </div>
+                <button class="btn-primary" onclick="submitActivityDemo()">Enviar Resposta da Tarefa ✅</button>
+            </div>
+        </div>
+
+        <div id="modal-create-class" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeModal('modal-create-class')">&times;</span>
+                <h2>Criar Nova Turma</h2>
+                <form onsubmit="handleCreateClass(event)">
+                    <div class="form-group">
+                        <label>Ano Escolar:</label>
+                        <select id="new-class-year">
+                            <option value="4º Ano">4º Ano</option>
+                            <option value="5º Ano">5º Ano</option>
+                            <option value="7º Ano">7º Ano</option>
+                            <option value="8º Ano">8º Ano</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nome da Turma:</label>
+                        <input type="text" id="new-class-name" required placeholder="Ex: Turma A - Manhã">
+                    </div>
+                    <button type="submit" class="btn-primary">Gerar Código de Turma 🔑</button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>ALE Aprender &copy; 2026 — Plataforma Educacional Acessível. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- WIDGET OFICIAL DO VLIBRAS PARA ACESSIBILIDADE EM LIBRAS -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

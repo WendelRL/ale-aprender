@@ -1,0 +1,12 @@
+{
+  "name": "ale-aprender",
+  "version": "1.0.0",
+  "description": "ALE Aprender: organizador de entregas acadêmicas acessível (atividade prática de Scrum)",
+  "private": true,
+  "scripts": {
+    "test": "node --test site.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
