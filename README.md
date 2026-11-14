@@ -1,6 +1,6 @@
 # ALE Aprender
 
-Organizador de entregas acadêmicas acessível, feito na atividade prática de Scrum (4 sprints).
+Organizador de entregas acadêmicas acessível, feito na atividade prática de Scrum - Gestão Ágil (4 sprints).
 
 **Site:** https://wendelrl.github.io/ale-aprender/
 
